@@ -3,13 +3,16 @@ import Navbar from "../Comoponents/Navbar"
 import { useState } from "react"
 import regAction from "../Redux/Action/regisAction"
 import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { useEffect } from "react"
 
 const Register = () => {
 
     const dispatch = useDispatch()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    
+    const Navigate = useNavigate()
+
     const handlePassword = (e) => {
         setPassword(e.target.value)
     }
@@ -23,12 +26,24 @@ const Register = () => {
             role: "Admin",
         }
         dispatch(regAction(payload));
-        
-        console.log(payload)
-    }
-    const {regisReducer} = useSelector((state)=>state)
-    console.log (regisReducer.message)
 
+    }
+
+    const {regisReducer} = useSelector((state)=>state)
+
+    useEffect(() => {("")
+            handleRedirect()
+    }, [regisReducer.message]);
+
+    const handleRedirect = () => {
+        setTimeout(() => {
+        if (regisReducer.message.length != "") {
+            Navigate("/")
+        } else {
+            console.log("gagal")
+        }
+    }, 2000)
+}
     return (
          <div>
             <Navbar />
